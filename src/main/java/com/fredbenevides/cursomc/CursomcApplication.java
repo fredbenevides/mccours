@@ -1,5 +1,6 @@
 package com.fredbenevides.cursomc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,21 @@ import com.fredbenevides.cursomc.domain.Address;
 import com.fredbenevides.cursomc.domain.Category;
 import com.fredbenevides.cursomc.domain.City;
 import com.fredbenevides.cursomc.domain.Client;
+import com.fredbenevides.cursomc.domain.Payment;
+import com.fredbenevides.cursomc.domain.PaymentCreditCard;
+import com.fredbenevides.cursomc.domain.PaymentFactured;
 import com.fredbenevides.cursomc.domain.Product;
+import com.fredbenevides.cursomc.domain.Purchase;
 import com.fredbenevides.cursomc.domain.State;
 import com.fredbenevides.cursomc.domain.enums.ClientType;
+import com.fredbenevides.cursomc.domain.enums.PaymentStatus;
 import com.fredbenevides.cursomc.repositories.AddressRepository;
 import com.fredbenevides.cursomc.repositories.CategoryRepository;
 import com.fredbenevides.cursomc.repositories.CityRepository;
 import com.fredbenevides.cursomc.repositories.ClientRepository;
+import com.fredbenevides.cursomc.repositories.PaymentRepository;
 import com.fredbenevides.cursomc.repositories.ProductRepository;
+import com.fredbenevides.cursomc.repositories.PurchaseRepository;
 import com.fredbenevides.cursomc.repositories.StateRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class CursomcApplication implements CommandLineRunner {
 	private ClientRepository clientRepository;
 	@Autowired
 	private AddressRepository addressRepository;
+	@Autowired
+	private PurchaseRepository purchaseRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -84,5 +96,22 @@ public class CursomcApplication implements CommandLineRunner {
 
 		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(a1, a2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Purchase pur1 = new Purchase(null, sdf.parse("30/09/2017 10:32"), cli1, a1);
+		Purchase pur2 = new Purchase(null, sdf.parse("10/10/2017 19:35"), cli1, a2);
+		
+		Payment pg1 = new PaymentCreditCard(null, PaymentStatus.PAID, pur1, 6);
+		pur1.setPayment(pg1);
+		
+		Payment pg2 = new PaymentFactured(null, PaymentStatus.PENDING, pur2, sdf.parse("20/10/2017 00:00"), null);
+		pur2.setPayment(pg2);
+		
+		cli1.getPurchases().addAll((Arrays.asList(pur1, pur2)));
+		
+		purchaseRepository.saveAll(Arrays.asList(pur1, pur2));
+		paymentRepository.saveAll(Arrays.asList(pg1, pg2));
+		
 	}
 }
