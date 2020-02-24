@@ -8,9 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.fredbenevides.cursomc.domain.Category;
+import com.fredbenevides.cursomc.domain.City;
 import com.fredbenevides.cursomc.domain.Product;
+import com.fredbenevides.cursomc.domain.State;
 import com.fredbenevides.cursomc.repositories.CategoryRepository;
+import com.fredbenevides.cursomc.repositories.CityRepository;
 import com.fredbenevides.cursomc.repositories.ProductRepository;
+import com.fredbenevides.cursomc.repositories.StateRepository;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
@@ -19,6 +23,10 @@ public class CursomcApplication implements CommandLineRunner {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private ProductRepository productRepository;
+	@Autowired
+	private StateRepository stateRepository;
+	@Autowired
+	private CityRepository cityRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -41,8 +49,20 @@ public class CursomcApplication implements CommandLineRunner {
 		p2.getCategories().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategories().addAll(Arrays.asList(cat1));
 
-		
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2));
 		productRepository.saveAll(Arrays.asList(p1, p2, p3));
+		
+		State s1 = new State(null, "Quebec");
+		State s2 = new State(null, "Ontario");
+		
+		City c1 = new City(null, "Montreal", s1);
+		City c2 = new City(null, "Trois Rivieres", s1);
+		City c3 = new City(null, "Otawa", s2);
+		
+		s1.getCities().addAll(Arrays.asList(c1, c2));
+		s2.getCities().addAll(Arrays.asList(c3));
+		
+		stateRepository.saveAll(Arrays.asList(s1, s2));
+		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 	}
 }
