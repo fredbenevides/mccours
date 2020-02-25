@@ -1,5 +1,7 @@
 package com.fredbenevides.cursomc.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,8 +12,9 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Address {
-
+public class Address implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -23,8 +26,8 @@ public class Address {
 
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "client_id")
-	private Client client;
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 	@ManyToOne
 	@JoinColumn(name = "city_id")
@@ -34,14 +37,14 @@ public class Address {
 	}
 
 	public Address(Integer id, String number, String line1, String complement, String district, String postalCode,
-			Client client, City city) {
+			Customer customer, City city) {
 		this.id = id;
 		this.number = number;
 		this.line1 = line1;
 		this.complement = complement;
 		this.district = district;
 		this.postalCode = postalCode;
-		this.client = client;
+		this.customer = customer;
 		this.city = city;
 	}
 
@@ -93,12 +96,12 @@ public class Address {
 		this.postalCode = postalCode;
 	}
 
-	public Client getClient() {
-		return client;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public City getCity() {

@@ -11,22 +11,24 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.fredbenevides.cursomc.domain.Address;
 import com.fredbenevides.cursomc.domain.Category;
 import com.fredbenevides.cursomc.domain.City;
-import com.fredbenevides.cursomc.domain.Client;
+import com.fredbenevides.cursomc.domain.Customer;
 import com.fredbenevides.cursomc.domain.Payment;
 import com.fredbenevides.cursomc.domain.PaymentCreditCard;
 import com.fredbenevides.cursomc.domain.PaymentFactured;
 import com.fredbenevides.cursomc.domain.Product;
 import com.fredbenevides.cursomc.domain.Purchase;
+import com.fredbenevides.cursomc.domain.PurchasedItem;
 import com.fredbenevides.cursomc.domain.State;
-import com.fredbenevides.cursomc.domain.enums.ClientType;
+import com.fredbenevides.cursomc.domain.enums.CustomerType;
 import com.fredbenevides.cursomc.domain.enums.PaymentStatus;
 import com.fredbenevides.cursomc.repositories.AddressRepository;
 import com.fredbenevides.cursomc.repositories.CategoryRepository;
 import com.fredbenevides.cursomc.repositories.CityRepository;
-import com.fredbenevides.cursomc.repositories.ClientRepository;
+import com.fredbenevides.cursomc.repositories.CustomerRepository;
 import com.fredbenevides.cursomc.repositories.PaymentRepository;
 import com.fredbenevides.cursomc.repositories.ProductRepository;
 import com.fredbenevides.cursomc.repositories.PurchaseRepository;
+import com.fredbenevides.cursomc.repositories.PurchasedItemRepository;
 import com.fredbenevides.cursomc.repositories.StateRepository;
 
 @SpringBootApplication
@@ -41,13 +43,15 @@ public class CursomcApplication implements CommandLineRunner {
 	@Autowired
 	private CityRepository cityRepository;
 	@Autowired
-	private ClientRepository clientRepository;
+	private CustomerRepository customerRepository;
 	@Autowired
 	private AddressRepository addressRepository;
 	@Autowired
 	private PurchaseRepository purchaseRepository;
 	@Autowired
 	private PaymentRepository paymentRepository;
+	@Autowired
+	private PurchasedItemRepository purchasedItemRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -86,7 +90,7 @@ public class CursomcApplication implements CommandLineRunner {
 		stateRepository.saveAll(Arrays.asList(s1, s2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "02200933428", ClientType.NATURALPERSON);
+		Customer cli1 = new Customer(null, "Maria Silva", "maria@gmail.com", "02200933428", CustomerType.NATURALPERSON);
 		cli1.getPhones().addAll(Arrays.asList("32316825", "34342081"));
 
 		Address a1 = new Address(null, "5314", "Av Louis Joseph Doucet", null, null, "H1M3J9", cli1, c1);
@@ -94,7 +98,7 @@ public class CursomcApplication implements CommandLineRunner {
 
 		cli1.getAddresses().addAll(Arrays.asList(a1, a2));
 
-		clientRepository.saveAll(Arrays.asList(cli1));
+		customerRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(a1, a2));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -112,6 +116,20 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		purchaseRepository.saveAll(Arrays.asList(pur1, pur2));
 		paymentRepository.saveAll(Arrays.asList(pg1, pg2));
+		
+		PurchasedItem pi1 = new PurchasedItem(pur1, p1, 0.00, 2000.00, 1);
+		PurchasedItem pi2 = new PurchasedItem(pur1, p3, 0.00, 80.00, 2);
+		PurchasedItem pi3 = new PurchasedItem(pur2, p2, 100.00, 800.00, 1);
+		
+		pur1.getItems().addAll(Arrays.asList(pi1, pi2));
+		pur2.getItems().addAll(Arrays.asList(pi3));
+		
+		p1.getItems().addAll(Arrays.asList(pi1));
+		p2.getItems().addAll(Arrays.asList(pi3));
+		p3.getItems().addAll(Arrays.asList(pi2));
+		
+		purchasedItemRepository.saveAll(Arrays.asList(pi1, pi2, pi3));
+		
 		
 	}
 }

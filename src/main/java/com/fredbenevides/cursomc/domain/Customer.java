@@ -15,10 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fredbenevides.cursomc.domain.enums.ClientType;
+import com.fredbenevides.cursomc.domain.enums.CustomerType;
 
 @Entity
-public class Client implements Serializable {
+public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -30,20 +30,20 @@ public class Client implements Serializable {
 	private Integer type;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "customer")
 	private List<Address> addresses = new ArrayList<>();
 
 	@ElementCollection
 	@CollectionTable(name = "phone")
 	private Set<String> phones = new HashSet<>();
 
-	@OneToMany(mappedBy = "client")
+	@OneToMany(mappedBy = "customer")
 	private List<Purchase> purchases = new ArrayList<>();
 
-	public Client() {
+	public Customer() {
 	}
 
-	public Client(Integer id, String name, String email, String cpfOrCnpj, ClientType type) {
+	public Customer(Integer id, String name, String email, String cpfOrCnpj, CustomerType type) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -83,11 +83,11 @@ public class Client implements Serializable {
 		this.cpfOrCnpj = cpfOrCnpj;
 	}
 
-	public ClientType getType() {
-		return ClientType.toEnum(type);
+	public CustomerType getType() {
+		return CustomerType.toEnum(type);
 	}
 
-	public void setType(ClientType type) {
+	public void setType(CustomerType type) {
 		this.type = type.getCode();
 	}
 
@@ -131,7 +131,7 @@ public class Client implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Client other = (Client) obj;
+		Customer other = (Customer) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

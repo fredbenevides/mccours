@@ -1,13 +1,13 @@
 package com.fredbenevides.cursomc.domain.enums;
 
-public enum ClientType {
+public enum CustomerType {
 
 	NATURALPERSON(1, "Natural Person"), LEGALPERSON(2, "Legal Person");
 
 	private int code;
 	private String description;
 
-	private ClientType(int code, String description) {
+	private CustomerType(int code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -20,11 +20,11 @@ public enum ClientType {
 		return description;
 	}
 
-	public static ClientType toEnum(Integer code) {
+	public static CustomerType toEnum(Integer code) {
 		if (code == null) {
 			return null;
 		}
-		for (ClientType x : ClientType.values()) {
+		for (CustomerType x : CustomerType.values()) {
 			if (code.equals(x.getCode())) {
 				return x;
 			}

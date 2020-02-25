@@ -2,6 +2,8 @@ package com.fredbenevides.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -25,20 +28,24 @@ public class Purchase implements Serializable {
 	private Payment payment;
 
 	@ManyToOne
-	@JoinColumn(name = "client_id")
-	private Client client;
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 	@ManyToOne
 	@JoinColumn(name = "delivery_address_id")
 	private Address deliveryAddress;
 
+	@OneToMany(mappedBy = "id.purchase")
+	private Set<PurchasedItem> items = new HashSet<>();
+	
+	
 	public Purchase() {
 	}
 
-	public Purchase(Integer id, Date purchaseInstant, Client client, Address deliveryAddress) {
+	public Purchase(Integer id, Date purchaseInstant, Customer customer, Address deliveryAddress) {
 		this.id = id;
 		this.purchaseInstant = purchaseInstant;
-		this.client = client;
+		this.customer = customer;
 		this.deliveryAddress = deliveryAddress;
 	}
 
@@ -66,12 +73,12 @@ public class Purchase implements Serializable {
 		this.payment = payment;
 	}
 
-	public Client getClient() {
-		return client;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public Address getDeliveryAddress() {
@@ -80,6 +87,15 @@ public class Purchase implements Serializable {
 
 	public void setDeliveryAddress(Address deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
+	}
+	
+
+	public Set<PurchasedItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<PurchasedItem> items) {
+		this.items = items;
 	}
 
 	@Override
