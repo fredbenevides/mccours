@@ -23,7 +23,6 @@ public class PurchasedItem implements Serializable{
 		super();
 	}
 
-
 	public PurchasedItem(Purchase purchase, Product product, Double discount, Double price, Integer quantity) {
 
 		this.id.setPurchase(purchase);
