@@ -60,11 +60,11 @@ public class CursomcApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Category cat1 = new Category(null, "Info");
+		Category cat1 = new Category(null, "Informatica");
 		Category cat2 = new Category(null, "Escritorio");
 		Category cat3 = new Category(null, "Games");
 		Category cat4 = new Category(null, "Eletronicos");
-		Category cat5 = new Category(null, "Sala");
+		Category cat5 = new Category(null, "Moveis");
 		Category cat6 = new Category(null, "Cozinha");
 		Category cat7 = new Category(null, "Brinquedos");
 		Category cat8 = new Category(null, "Instrumentos");
